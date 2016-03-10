@@ -4,8 +4,13 @@
 
 Store and retrive POJsO from consul keystore.
 
+[![NPM](https://nodei.co/npm/consul-kv-object.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/consul-kv-object/)
 
 ## Usage
+
+```
+npm install --save consul-kv-object
+```
 
 ```
 var consul = require('consul')();
