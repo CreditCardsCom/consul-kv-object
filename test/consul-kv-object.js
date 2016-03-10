@@ -180,7 +180,7 @@ describe("consul-kv-object", function () {
                     kv.set.should.be.calledWith({
                         key: "test/consul-kv-set-test/string",
                         value: "value",
-                        flag: 0
+                        flags: 0
                     });
                     done();
                 });
@@ -192,7 +192,7 @@ describe("consul-kv-object", function () {
                     kv.set.should.be.calledWith({
                         key: "test/consul-kv-set-test/number",
                         value: "123",
-                        flag: 1
+                        flags: 1
                     });
                     done();
                 });
@@ -204,25 +204,25 @@ describe("consul-kv-object", function () {
                     kv.set.should.be.calledWith({
                         key: "test/consul-kv-set-test/boolean",
                         value: "true",
-                        flag: 2
+                        flags: 2
                     });
                     done();
                 });
             });
             it("sets speficied key to specified date value in default mapping", function (done) {
-                var date= new Date('Thu Mar 10 2016 13:12:59 GMT+0100 (CET)');
+                var date = new Date('Thu Mar 10 2016 13:12:59 GMT+0100 (CET)');
                 objectKv.set(testKey + "/date", date, function (err, res) {
                     should.not.exist(err);
                     kv.set.should.be.calledOnce();
                     kv.set.should.be.calledWith({
                         key: "test/consul-kv-set-test/date",
                         value: 'Thu Mar 10 2016 13:12:59 GMT+0100 (CET)',
-                        flag: 3
+                        flags: 3
                     });
                     done();
                 });
             });
-            it("sets a nested object", function(done) {
+            it("sets a nested object", function (done) {
                 var test = {
                     so1: {
                         "k11": "v11",
@@ -234,28 +234,73 @@ describe("consul-kv-object", function () {
                     k1: "v1",
                     k2: "v2"
                 }
-                objectKv.set(testKey+"/object", test, function(err,res) {
+                objectKv.set(testKey + "/object", test, function (err, res) {
                     should.not.exist(err);
-                    kv.set.should.have.callCount(8);
-                    kv.set.should.be.calledWith({ key:'test/consul-kv-set-test/object/', flag:0 });
-                    kv.set.should.be.calledWith({ key:'test/consul-kv-set-test/object/so1/', flag:0 });
-                    kv.set.should.be.calledWith({ key:'test/consul-kv-set-test/object/so1/k11', flag:0, value:"v11" });
-                    kv.set.should.be.calledWith({ key:'test/consul-kv-set-test/object/so1/k12', flag:0, value:"v12" });
-                    kv.set.should.be.calledWith({ key:'test/consul-kv-set-test/object/so1/so11/', flag:0 });
-                    kv.set.should.be.calledWith({ key:'test/consul-kv-set-test/object/so1/so11/k111', flag:0, value:"v111" });
-                    kv.set.should.be.calledWith({ key:'test/consul-kv-set-test/object/k1', flag:0, value:"v1" });
-                    kv.set.should.be.calledWith({ key:'test/consul-kv-set-test/object/k2', flag:0, value:"v2" });
+                    kv.set.should.have.callCount(5);
+                    kv.set.should.be.calledWith({ key: 'test/consul-kv-set-test/object/so1/k11', flags: 0, value: "v11" });
+                    kv.set.should.be.calledWith({ key: 'test/consul-kv-set-test/object/so1/k12', flags: 0, value: "v12" });
+                    kv.set.should.be.calledWith({ key: 'test/consul-kv-set-test/object/so1/so11/k111', flags: 0, value: "v111" });
+                    kv.set.should.be.calledWith({ key: 'test/consul-kv-set-test/object/k1', flags: 0, value: "v1" });
+                    kv.set.should.be.calledWith({ key: 'test/consul-kv-set-test/object/k2', flags: 0, value: "v2" });
                     done();
                 });
-            })
+            });
+            it("sets a nested object with correct flagMapping", function (done) {
+                var test = {
+                    so1: {
+                        "k11": "v11",
+                        "k12": 123,
+                        so11: {
+                            "k111": false
+                        }
+                    },
+                    k1: "v1",
+                    k2: new Date('Thu Mar 10 2016 13:12:59 GMT+0100 (CET)')
+                }
+                objectKv.set(testKey + "/object", test, function (err, res) {
+                    should.not.exist(err);
+                    kv.set.should.have.callCount(5);
+                    kv.set.should.be.calledWith({ key: 'test/consul-kv-set-test/object/so1/k11', flags: 0, value: "v11" });
+                    kv.set.should.be.calledWith({ key: 'test/consul-kv-set-test/object/so1/k12', flags: 1, value: "123" });
+                    kv.set.should.be.calledWith({ key: 'test/consul-kv-set-test/object/so1/so11/k111', flags: 2, value: "false" });
+                    kv.set.should.be.calledWith({ key: 'test/consul-kv-set-test/object/k1', flags: 0, value: "v1" });
+                    kv.set.should.be.calledWith({ key: 'test/consul-kv-set-test/object/k2', flags: 3, value: "Thu Mar 10 2016 13:12:59 GMT+0100 (CET)" });
+                    done();
+                });
+            });
+            it("sets a nested object and ingnores flagmapping when flagmapper is disabled", function (done) {
+                var test = {
+                    so1: {
+                        "k11": "v11",
+                        "k12": 123,
+                        so11: {
+                            "k111": false
+                        }
+                    },
+                    k1: "v1",
+                    k2: new Date('Thu Mar 10 2016 13:12:59 GMT+0100 (CET)')
+                }
+                var objectKv = consulKvObject(kv, { mapTypes: false });
+                
+                objectKv.set(testKey + "/object", test, function (err, res) {
+                    should.not.exist(err);
+                    kv.set.should.have.callCount(5);
+                    kv.set.should.be.calledWith({ key: 'test/consul-kv-set-test/object/so1/k11', flags: 0, value: "v11" });
+                    kv.set.should.be.calledWith({ key: 'test/consul-kv-set-test/object/so1/k12', flags: 0, value: "123" });
+                    kv.set.should.be.calledWith({ key: 'test/consul-kv-set-test/object/so1/so11/k111', flags: 0, value: "false" });
+                    kv.set.should.be.calledWith({ key: 'test/consul-kv-set-test/object/k1', flags: 0, value: "v1" });
+                    kv.set.should.be.calledWith({ key: 'test/consul-kv-set-test/object/k2', flags: 0, value: "Thu Mar 10 2016 13:12:59 GMT+0100 (CET)" });
+                    done();
+                });
+            });
         });
         describe("del(options,callback)", function () {
-            it("deletes object", function(done){
-                objectKv.del(testKey+"/del", function(err,res) {
+            it("deletes object", function (done) {
+                objectKv.del(testKey + "/del", function (err, res) {
                     should.not.exist(err);
                     kv.del.should.be.calledOnce();
                     kv.del.should.be.calledWith({
-                        key: testKey+"/del",
+                        key: testKey + "/del",
                         recurse: true
                     });
                     done();
