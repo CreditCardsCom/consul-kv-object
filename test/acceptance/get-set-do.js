@@ -20,10 +20,12 @@ describe("Acceptance with live consul", function () {
         123, 0, 0xff,
         false, true,
         new Date('Thu Mar 10 2016 14:34:45 GMT+0100 (CET)'),
-        { test: "asd" }
+        { test: "asd" },
+        { nested: { more: { values: 123 }}},
+        { test: { nested: false }}
     ].forEach(function (tv) {
 
-        it("sets and reads a " + tv.constructor.name + ":" + tv.toLocaleString(), function (done) {
+        it("sets and reads a " + tv.constructor.name + ":" + JSON.stringify(tv), function (done) {
             var tk = testSpace + "/test";
             objectKv.set(tk, tv, function (err, res) {
                 should.not.exist(err);

@@ -5,7 +5,8 @@
   "main": "lib/consul-kv-object.js",
   "scripts": {
     "test": "istanbul cover _mocha -- -R spec",
-    "cover": "istanbul cover _mocha -- --recursive && xdg-open coverage/lcov-report/index.html"
+    "cover": "istanbul cover _mocha -- && xdg-open coverage/lcov-report/index.html",
+    "acceptance": "ACCEPTANCE=true istanbul cover --report text _mocha -- test/acceptance --recursive --check-leaks --timeout 15000"
   },
   "repository": {
     "type": "git",
