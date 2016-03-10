@@ -13,7 +13,7 @@ function mockConsulForge() {
     }
     var mock = {
         "get": sinon.spy(function (options, callback) {
-            var file = 'test/mock-responses/' + options.key.replace(/\//g, "--") + ".json";
+            var file = 'test/mock-responses/' + options.key.replace(/\/$/,'').replace(/\//g, "--") + ".json";
 
             fs.readFile(file, function (err, res) {
                 if (err) {
@@ -101,6 +101,16 @@ describe("consul-kv-object", function () {
             });
             it("allows to query for subobject", function (done) {
                 objectKv.get(testKey + "/so1", function (err, res) {
+                    should.not.exist(err);
+                    res.should.be.deepEqual({
+                        k1: "v1",
+                        k2: "v2"
+                    })
+                    done();
+                });
+            });
+            it("ignores trailing slash for key", function (done) {
+                objectKv.get(testKey + "/so1/", function (err, res) {
                     should.not.exist(err);
                     res.should.be.deepEqual({
                         k1: "v1",
