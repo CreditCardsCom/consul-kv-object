@@ -1,7 +1,9 @@
 # consul-kv-object
 [![Build Status](https://travis-ci.org/lekoder/consul-kv-object.svg?branch=master)](https://travis-ci.org/lekoder/consul-kv-object)
+[![Coverage Status](https://coveralls.io/repos/github/lekoder/consul-kv-object/badge.svg?branch=master)](https://coveralls.io/github/lekoder/consul-kv-object?branch=master)
 
 Store and retrive POJsO from consul keystore.
+
 
 ## Usage
 
