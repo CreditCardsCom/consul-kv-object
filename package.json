@@ -4,8 +4,8 @@
   "description": "Store and retrive POJsO from consul keystore",
   "main": "lib/consul-kv-object.js",
   "scripts": {
-    "test": "istanbul cover _mocha -- -R spec",
-    "cover": "istanbul cover _mocha -- && xdg-open coverage/lcov-report/index.html",
+    "test": "istanbul cover node_modules/mocha/bin/_mocha -- -R spec",
+    "cover": "istanbul cover node_modules/mocha/bin/_mocha -- -R spec && xdg-open coverage/lcov-report/index.html",
     "acceptance": "ACCEPTANCE=true istanbul cover --report text _mocha -- test/acceptance --recursive --check-leaks --timeout 15000",
     "coveralls": "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls"
   },
