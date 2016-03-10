@@ -9,4 +9,3 @@ var consul = require('consul');
 var consulKvObject = require('consul-kv-object')(consul().kv,options);
 ```
 
-option | 
