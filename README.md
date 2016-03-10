@@ -21,7 +21,7 @@ Options are passed as optional second parameter.
 |--------------|-----------|---------|
 | mapTypes     | true      | Perform type mapping when setting and getting
 | defaultType  | see below | Default type to use when flag is not recognized 
-| typeMapFlags | see below | 
+| typeMapFlags | see below | Type mapping array
 
 ## Type mapping 
 
