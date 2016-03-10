@@ -250,7 +250,17 @@ describe("consul-kv-object", function () {
             })
         });
         describe("del(options,callback)", function () {
-
+            it("deletes object", function(done){
+                objectKv.del(testKey+"/del", function(err,res) {
+                    should.not.exist(err);
+                    kv.del.should.be.calledOnce();
+                    kv.del.should.be.calledWith({
+                        key: testKey+"/del",
+                        recurse: true
+                    });
+                    done();
+                })
+            });
         });
     })
 
