@@ -1,7 +1,6 @@
 # consul-kv-object
 [![Build Status](https://travis-ci.org/lekoder/consul-kv-object.svg?branch=master)](https://travis-ci.org/lekoder/consul-kv-object)
 
-
 Store and retrive POJsO from consul keystore.
 
 ## Usage

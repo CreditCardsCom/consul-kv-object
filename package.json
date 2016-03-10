@@ -6,7 +6,8 @@
   "scripts": {
     "test": "istanbul cover _mocha -- -R spec",
     "cover": "istanbul cover _mocha -- && xdg-open coverage/lcov-report/index.html",
-    "acceptance": "ACCEPTANCE=true istanbul cover --report text _mocha -- test/acceptance --recursive --check-leaks --timeout 15000"
+    "acceptance": "ACCEPTANCE=true istanbul cover --report text _mocha -- test/acceptance --recursive --check-leaks --timeout 15000",
+    "coveralls": "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls"
   },
   "repository": {
     "type": "git",
@@ -27,6 +28,7 @@
   "homepage": "https://github.com/lekoder/consul-kv-object#readme",
   "devDependencies": {
     "consul": "^0.24.0",
+    "coveralls": "^2.11.8",
     "istanbul": "^0.4.2",
     "mocha": "^2.4.5",
     "should": "^8.2.2",
@@ -37,6 +39,6 @@
     "bluebird": "^3.3.4"
   },
   "engines": {
-     "node" : ">=4.0"  
+    "node": ">=4.0"
   }
 }
