@@ -34,3 +34,4 @@ node_modules
 
 # typings managed by typings
 typings
+.vscode
