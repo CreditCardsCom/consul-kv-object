@@ -1,6 +1,6 @@
 {
   "name": "consul-kv-object",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Store and retrive POJsO from consul keystore",
   "main": "lib/consul-kv-object.js",
   "scripts": {
