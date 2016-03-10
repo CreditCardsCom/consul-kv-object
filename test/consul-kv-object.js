@@ -216,7 +216,7 @@ describe("consul-kv-object", function () {
                     kv.set.should.be.calledOnce();
                     kv.set.should.be.calledWith({
                         key: "test/consul-kv-set-test/date",
-                        value: 'Thu Mar 10 2016 13:12:59 GMT+0100 (CET)',
+                        value: date.toString(),
                         flags: 3
                     });
                     done();
@@ -264,7 +264,7 @@ describe("consul-kv-object", function () {
                     kv.set.should.be.calledWith({ key: 'test/consul-kv-set-test/object/so1/k12', flags: 1, value: "123" });
                     kv.set.should.be.calledWith({ key: 'test/consul-kv-set-test/object/so1/so11/k111', flags: 2, value: "false" });
                     kv.set.should.be.calledWith({ key: 'test/consul-kv-set-test/object/k1', flags: 0, value: "v1" });
-                    kv.set.should.be.calledWith({ key: 'test/consul-kv-set-test/object/k2', flags: 3, value: "Thu Mar 10 2016 13:12:59 GMT+0100 (CET)" });
+                    kv.set.should.be.calledWith({ key: 'test/consul-kv-set-test/object/k2', flags: 3, value: new Date('Thu Mar 10 2016 13:12:59 GMT+0100 (CET)').toString() });
                     done();
                 });
             });
@@ -289,7 +289,7 @@ describe("consul-kv-object", function () {
                     kv.set.should.be.calledWith({ key: 'test/consul-kv-set-test/object/so1/k12', flags: 0, value: "123" });
                     kv.set.should.be.calledWith({ key: 'test/consul-kv-set-test/object/so1/so11/k111', flags: 0, value: "false" });
                     kv.set.should.be.calledWith({ key: 'test/consul-kv-set-test/object/k1', flags: 0, value: "v1" });
-                    kv.set.should.be.calledWith({ key: 'test/consul-kv-set-test/object/k2', flags: 0, value: "Thu Mar 10 2016 13:12:59 GMT+0100 (CET)" });
+                    kv.set.should.be.calledWith({ key: 'test/consul-kv-set-test/object/k2', flags: 0, value: new Date("Thu Mar 10 2016 13:12:59 GMT+0100 (CET)").toString() });
                     done();
                 });
             });
