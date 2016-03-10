@@ -13,7 +13,7 @@ function mockConsulForge() {
     }
     var mock = {
         "get": sinon.spy(function (options, callback) {
-            var file = 'test/mock-responses/' + options.key.replace(/\/$/,'').replace(/\//g, "--") + ".json";
+            var file = 'test/mock-responses/' + options.key.replace(/\/$/, '').replace(/\//g, "--") + ".json";
 
             fs.readFile(file, function (err, res) {
                 if (err) {
@@ -119,32 +119,54 @@ describe("consul-kv-object", function () {
                     done();
                 });
             });
-            it("allows to query for value", function(done) {
+            it("allows to query for value", function (done) {
                 objectKv.get(testKey + "/k1", function (err, res) {
                     should.not.exist(err);
                     res.should.be.equal(123);
                     done();
                 });
             });
-            it("maps numbers", function(done) {
-                objectKv.get('test/consul-kv-number', function(err,res) {
+            it("maps numbers", function (done) {
+                objectKv.get('test/consul-kv-number', function (err, res) {
                     should.not.exist(err);
                     res.should.be.equal(123456);
                     res.should.be.a.Number();
                     done();
                 })
             });
-            it("maps booleans", function(done) {
-                objectKv.get('test/consul-kv-boolean', function(err,res) {
+            it("maps booleans", function (done) {
+                objectKv.get('test/consul-kv-boolean', function (err, res) {
                     should.not.exist(err);
                     res.should.be.a.Boolean();
                     done();
                 })
             });
-            it("maps dates", function(done) {
-                objectKv.get('test/consul-kv-date', function(err,res) {
+            it("maps dates", function (done) {
+                objectKv.get('test/consul-kv-date', function (err, res) {
                     should.not.exist(err);
                     res.should.be.a.Date();
+                    done();
+                })
+            });
+            it("defaults to string if flag is not known", function (done) {
+                objectKv.get('test/consul-kv-unknown', function (err, res) {
+                    should.not.exist(err);
+                    res.should.be.a.String();
+                    res.should.be.equal("true");
+                    done();
+                })
+            });
+            it("allows to disable type mapping", function (done) {
+                var objectKv = consulKvObject(kv, { mapTypes: false });
+                objectKv.get('test/consul-kv-date', function (err, res) {
+                    should.not.exist(err);
+                    res.should.be.a.String();
+                    done();
+                });
+            });
+            it("passess error to callback", function (done) {
+                objectKv.get('test/key-that-does-not-exist', function (err, res) {
+                    should.exist(err);
                     done();
                 })
             });
