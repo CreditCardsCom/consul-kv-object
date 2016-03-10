@@ -1,0 +1,36 @@
+{
+  "name": "consul-kv-object",
+  "version": "0.0.1",
+  "description": "Store and retrive POJsO from consul keystore",
+  "main": "lib/consul-kv-object.js",
+  "scripts": {
+    "test": "istanbul cover node_modules/mocha/bin/_mocha -- -R spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lekoder/consul-kv-object.git"
+  },
+  "keywords": [
+    "consul",
+    "keystore",
+    "mapping",
+    "object",
+    "pojo"
+  ],
+  "author": "Mariusz 'koder' Chwalba <mariusz@chwalba.net>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lekoder/consul-kv-object/issues"
+  },
+  "homepage": "https://github.com/lekoder/consul-kv-object#readme",
+  "devDependencies": {
+    "consul": "^0.24.0",
+    "istanbul": "^0.4.2",
+    "mocha": "^2.4.5",
+    "should": "^8.2.2",
+    "sinon": "^1.17.3",
+    "consul": "^0.24.0"
+  },
+  "dependencies": {
+  }
+}
