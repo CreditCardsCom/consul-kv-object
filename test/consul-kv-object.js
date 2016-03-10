@@ -13,7 +13,7 @@ function mockConsulForge() {
     }
     var mock = {
         "get": sinon.spy(function (options, callback) {
-            var file = 'test/mock-responses/' + options.key.replace("/", "--") + ".json";
+            var file = 'test/mock-responses/' + options.key.replace(/\//g, "--") + ".json";
 
             fs.readFile(file, function (err, res) {
                 if (err) {
@@ -46,7 +46,7 @@ describe("consul-kv-object", function () {
         objectKv.set.should.be.a.Function();
         objectKv.del.should.be.a.Function();
     });
-    describe("kv(consul.kv)", function () {
+    describe("kv(consul.kv)#default", function () {
         var testKey = "test/consul-kv-object";
         var objectKv, kv;
         beforeEach(function () {
@@ -81,7 +81,7 @@ describe("consul-kv-object", function () {
                 objectKv.get(testKey, function (err, res) {
                     should.not.exist(err);
                     res.should.be.deepEqual({
-                        k1: 'v1',
+                        k1: 123,
                         k2: 'v2',
                         k3: 'v3',
                         so1: {
@@ -96,6 +96,23 @@ describe("consul-kv-object", function () {
                             }
                         }
                     })
+                    done();
+                });
+            });
+            it("allows to query for subobject", function (done) {
+                objectKv.get(testKey + "/so1", function (err, res) {
+                    should.not.exist(err);
+                    res.should.be.deepEqual({
+                        k1: "v1",
+                        k2: "v2"
+                    })
+                    done();
+                });
+            });
+            it("allows to query for value", function(done) {
+                objectKv.get(testKey + "/k1", function (err, res) {
+                    should.not.exist(err);
+                    res.should.be.equal(123);
                     done();
                 });
             })
