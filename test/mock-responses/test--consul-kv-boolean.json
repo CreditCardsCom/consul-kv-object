@@ -1,0 +1,6 @@
+[ { "LockIndex": 0,
+    "Key": "test/consul-kv-boolean",
+    "Flags": 2,
+    "Value": "true",
+    "CreateIndex": 59798621,
+    "ModifyIndex": 59798621 } ]
