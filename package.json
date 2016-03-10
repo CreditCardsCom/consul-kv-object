@@ -33,5 +33,7 @@
     "should-sinon": "0.0.5",
     "sinon": "^1.17.3"
   },
-  "dependencies": {}
+  "dependencies": {
+    "bluebird": "^3.3.4"
+  }
 }

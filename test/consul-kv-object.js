@@ -172,7 +172,82 @@ describe("consul-kv-object", function () {
             });
         });
         describe("set(options,callback)", function () {
-
+            var testKey = 'test/consul-kv-set-test';
+            it("sets speficied key to specified string value in default mapping", function (done) {
+                objectKv.set(testKey + "/string", "value", function (err, res) {
+                    should.not.exist(err);
+                    kv.set.should.be.calledOnce();
+                    kv.set.should.be.calledWith({
+                        key: "test/consul-kv-set-test/string",
+                        value: "value",
+                        flag: 0
+                    });
+                    done();
+                });
+            });
+            it("sets speficied key to specified number value in default mapping", function (done) {
+                objectKv.set(testKey + "/number", 123, function (err, res) {
+                    should.not.exist(err);
+                    kv.set.should.be.calledOnce();
+                    kv.set.should.be.calledWith({
+                        key: "test/consul-kv-set-test/number",
+                        value: "123",
+                        flag: 1
+                    });
+                    done();
+                });
+            });
+            it("sets speficied key to specified boolean value in default mapping", function (done) {
+                objectKv.set(testKey + "/boolean", true, function (err, res) {
+                    should.not.exist(err);
+                    kv.set.should.be.calledOnce();
+                    kv.set.should.be.calledWith({
+                        key: "test/consul-kv-set-test/boolean",
+                        value: "true",
+                        flag: 2
+                    });
+                    done();
+                });
+            });
+            it("sets speficied key to specified date value in default mapping", function (done) {
+                var date= new Date('Thu Mar 10 2016 13:12:59 GMT+0100 (CET)');
+                objectKv.set(testKey + "/date", date, function (err, res) {
+                    should.not.exist(err);
+                    kv.set.should.be.calledOnce();
+                    kv.set.should.be.calledWith({
+                        key: "test/consul-kv-set-test/date",
+                        value: 'Thu Mar 10 2016 13:12:59 GMT+0100 (CET)',
+                        flag: 3
+                    });
+                    done();
+                });
+            });
+            it("sets a nested object", function(done) {
+                var test = {
+                    so1: {
+                        "k11": "v11",
+                        "k12": "v12",
+                        so11: {
+                            "k111": "v111"
+                        }
+                    },
+                    k1: "v1",
+                    k2: "v2"
+                }
+                objectKv.set(testKey+"/object", test, function(err,res) {
+                    should.not.exist(err);
+                    kv.set.should.have.callCount(8);
+                    kv.set.should.be.calledWith({ key:'test/consul-kv-set-test/object/', flag:0 });
+                    kv.set.should.be.calledWith({ key:'test/consul-kv-set-test/object/so1/', flag:0 });
+                    kv.set.should.be.calledWith({ key:'test/consul-kv-set-test/object/so1/k11', flag:0, value:"v11" });
+                    kv.set.should.be.calledWith({ key:'test/consul-kv-set-test/object/so1/k12', flag:0, value:"v12" });
+                    kv.set.should.be.calledWith({ key:'test/consul-kv-set-test/object/so1/so11/', flag:0 });
+                    kv.set.should.be.calledWith({ key:'test/consul-kv-set-test/object/so1/so11/k111', flag:0, value:"v111" });
+                    kv.set.should.be.calledWith({ key:'test/consul-kv-set-test/object/k1', flag:0, value:"v1" });
+                    kv.set.should.be.calledWith({ key:'test/consul-kv-set-test/object/k2', flag:0, value:"v2" });
+                    done();
+                });
+            })
         });
         describe("del(options,callback)", function () {
 
