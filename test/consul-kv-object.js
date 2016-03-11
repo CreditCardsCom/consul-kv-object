@@ -15,6 +15,10 @@ function mockConsulForge() {
         "get": sinon.spy(function (options, callback) {
             var file = 'test/mock-responses/' + options.key.replace(/\/$/, '').replace(/\//g, "--") + ".json";
 
+            if (options.key.match(/nonexisting/) ) {
+                callback( null, undefined );
+            }
+
             fs.readFile(file, function (err, res) {
                 if (err) {
                     callback(err, null);
@@ -170,6 +174,13 @@ describe("consul-kv-object", function () {
                     done();
                 })
             });
+            it("returns undefined when asking for undefined key", function(done) {
+                objectKv.get('test/nonexisting', function( err,res ) {
+                    should.not.exists(err);
+                    should.equal(res,undefined);
+                    done();
+                })
+            });
         });
         describe("set(options,callback)", function () {
             var testKey = 'test/consul-kv-set-test';
@@ -290,6 +301,29 @@ describe("consul-kv-object", function () {
                     kv.set.should.be.calledWith({ key: 'test/consul-kv-set-test/object/so1/so11/k111', flags: 0, value: "false" });
                     kv.set.should.be.calledWith({ key: 'test/consul-kv-set-test/object/k1', flags: 0, value: "v1" });
                     kv.set.should.be.calledWith({ key: 'test/consul-kv-set-test/object/k2', flags: 0, value: new Date("Thu Mar 10 2016 13:12:59 GMT+0100 (CET)").toString() });
+                    done();
+                });
+            });
+            it("sets at root of keyspace without leading slashes", function( done ) {
+                var test = {
+                    so1: {
+                        "k11": "v11",
+                        "k12": 123,
+                        so11: {
+                            "k111": false
+                        }
+                    },
+                    k1: "v1",
+                    k2: new Date('Thu Mar 10 2016 13:12:59 GMT+0100 (CET)')
+                }
+                objectKv.set("", test, function (err, res) {
+                    should.not.exist(err);
+                    kv.set.should.have.callCount(5);
+                    kv.set.should.be.calledWith({ key: 'so1/k11', flags: 0, value: "v11" });
+                    kv.set.should.be.calledWith({ key: 'so1/k12', flags: 1, value: "123" });
+                    kv.set.should.be.calledWith({ key: 'so1/so11/k111', flags: 2, value: "false" });
+                    kv.set.should.be.calledWith({ key: 'k1', flags: 0, value: "v1" });
+                    kv.set.should.be.calledWith({ key: 'k2', flags: 3, value: new Date("Thu Mar 10 2016 13:12:59 GMT+0100 (CET)").toString() });
                     done();
                 });
             });
