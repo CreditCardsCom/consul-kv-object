@@ -39,7 +39,22 @@ describe("Acceptance with live consul", function () {
             });
         });
     });
-
-
+    
+    it("can set object at root of consul keystore", function(done) {
+        var testObj = {
+            test: {
+                asd:123
+            }
+        };
+        objectKv.set("",testObj, function(err,res) {
+            should.not.exist(err);
+            objectKv.get("test/asd", function(err,res) {
+                should.not.exist(err);
+                res.should.be.equal(123);
+                done();
+            });
+        })
+        
+    });
 
 });
