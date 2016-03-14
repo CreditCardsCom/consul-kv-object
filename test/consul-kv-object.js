@@ -208,6 +208,13 @@ describe("consul-kv-object", function () {
                         done();
                     })
                 });
+                it("should work if there is empty object in consul", function (done) {
+                    objectKv.get('test/consul-kv-null', function (err, res) {
+                        should.not.exist(err);
+                        should.be.equal( res, null );
+                        done();
+                    })
+                })
 
             })
         });
