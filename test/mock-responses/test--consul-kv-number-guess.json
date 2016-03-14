@@ -1,0 +1,7 @@
+[ { "LockIndex": 0,
+    "Key": "test/consul-kv-number",
+    "Flags": 0,
+    "Value": "123456",
+    "CreateIndex": 59798621,
+    "ModifyIndex": 59798621 } ]
+    

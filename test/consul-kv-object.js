@@ -15,8 +15,8 @@ function mockConsulForge() {
         "get": sinon.spy(function (options, callback) {
             var file = 'test/mock-responses/' + options.key.replace(/\/$/, '').replace(/\//g, "--") + ".json";
 
-            if (options.key.match(/nonexisting/) ) {
-                callback( null, undefined );
+            if (options.key.match(/nonexisting/)) {
+                callback(null, undefined);
             }
 
             fs.readFile(file, function (err, res) {
@@ -174,13 +174,42 @@ describe("consul-kv-object", function () {
                     done();
                 })
             });
-            it("returns undefined when asking for undefined key", function(done) {
-                objectKv.get('test/nonexisting', function( err,res ) {
+            it("returns undefined when asking for undefined key", function (done) {
+                objectKv.get('test/nonexisting', function (err, res) {
                     should.not.exists(err);
-                    should.equal(res,undefined);
+                    should.equal(res, undefined);
                     done();
                 })
             });
+            describe("#guessTypes", function () {
+                beforeEach(function () {
+                    kv = mockConsulForge();
+                    objectKv = consulKvObject(kv, { guessTypes: true });
+                });
+                it("maps numbers", function (done) {
+                    objectKv.get('test/consul-kv-number-guess', function (err, res) {
+                        should.not.exist(err);
+                        res.should.be.equal(123456);
+                        res.should.be.a.Number();
+                        done();
+                    })
+                });
+                it("maps booleans", function (done) {
+                    objectKv.get('test/consul-kv-boolean-guess', function (err, res) {
+                        should.not.exist(err);
+                        res.should.be.a.Boolean();
+                        done();
+                    })
+                });
+                it("maps dates", function (done) {
+                    objectKv.get('test/consul-kv-date-guess', function (err, res) {
+                        should.not.exist(err);
+                        res.should.be.a.Date();
+                        done();
+                    })
+                });
+
+            })
         });
         describe("set(options,callback)", function () {
             var testKey = 'test/consul-kv-set-test';
@@ -292,7 +321,7 @@ describe("consul-kv-object", function () {
                     k2: new Date('Thu Mar 10 2016 13:12:59 GMT+0100 (CET)')
                 }
                 var objectKv = consulKvObject(kv, { mapTypes: false });
-                
+
                 objectKv.set(testKey + "/object", test, function (err, res) {
                     should.not.exist(err);
                     kv.set.should.have.callCount(5);
@@ -304,7 +333,7 @@ describe("consul-kv-object", function () {
                     done();
                 });
             });
-            it("sets at root of keyspace without leading slashes", function( done ) {
+            it("sets at root of keyspace without leading slashes", function (done) {
                 var test = {
                     so1: {
                         "k11": "v11",
