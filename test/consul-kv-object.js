@@ -363,6 +363,17 @@ describe("consul-kv-object", function () {
                     done();
                 });
             });
+            it("sets a null object", function() {
+                var test = {
+                    null: null
+                }
+                objectKv.set("", test, function (err, res) {
+                    should.not.exist(err);
+                    kv.set.should.have.callCount(1);
+                    kv.set.should.be.calledWith({ key: 'null', flags: 0, value: null });
+                    done();
+                });
+            })
         });
         describe("del(options,callback)", function () {
             it("deletes object", function (done) {
