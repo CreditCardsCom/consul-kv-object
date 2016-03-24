@@ -363,7 +363,7 @@ describe("consul-kv-object", function () {
                     done();
                 });
             });
-            it("sets a null object", function() {
+            it("sets a null object", function(done) {
                 var test = {
                     null: null
                 }
