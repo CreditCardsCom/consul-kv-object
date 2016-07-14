@@ -374,6 +374,9 @@ describe("consul-kv-object", function () {
                     done();
                 });
             });
+            it("works without callback", function () {
+                objectKv.set("test", 123);
+            });
         });
         describe("del(options,callback)", function () {
             it("deletes object", function (done) {
@@ -387,6 +390,10 @@ describe("consul-kv-object", function () {
                     done();
                 });
             });
+            it("works without callback", function () {
+                objectKv.del(testKey + "/del");
+            });
+
         });
     });
 
