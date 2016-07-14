@@ -79,7 +79,7 @@ describe("consul-kv-object", function () {
                 });
             });
             it("calls callback when done", function (done) {
-                objectKv.get(testKey, (err, res) => { done(); })
+                objectKv.get(testKey, (err, res) => { done(); });
             });
             it("calls callback with object representation of keystore", function (done) {
                 objectKv.get(testKey, function (err, res) {
@@ -99,7 +99,7 @@ describe("consul-kv-object", function () {
                                 k1: "v1"
                             }
                         }
-                    })
+                    });
                     done();
                 });
             });
@@ -109,7 +109,7 @@ describe("consul-kv-object", function () {
                     res.should.be.deepEqual({
                         k1: "v1",
                         k2: "v2"
-                    })
+                    });
                     done();
                 });
             });
@@ -119,7 +119,7 @@ describe("consul-kv-object", function () {
                     res.should.be.deepEqual({
                         k1: "v1",
                         k2: "v2"
-                    })
+                    });
                     done();
                 });
             });
@@ -136,21 +136,21 @@ describe("consul-kv-object", function () {
                     res.should.be.equal(123456);
                     res.should.be.a.Number();
                     done();
-                })
+                });
             });
             it("maps booleans", function (done) {
                 objectKv.get('test/consul-kv-boolean', function (err, res) {
                     should.not.exist(err);
                     res.should.be.a.Boolean();
                     done();
-                })
+                });
             });
             it("maps dates", function (done) {
                 objectKv.get('test/consul-kv-date', function (err, res) {
                     should.not.exist(err);
                     res.should.be.a.Date();
                     done();
-                })
+                });
             });
             it("defaults to string if flag is not known", function (done) {
                 objectKv.get('test/consul-kv-unknown', function (err, res) {
@@ -158,7 +158,7 @@ describe("consul-kv-object", function () {
                     res.should.be.a.String();
                     res.should.be.equal("true");
                     done();
-                })
+                });
             });
             it("allows to disable type mapping", function (done) {
                 var objectKv = consulKvObject(kv, { mapTypes: false });
@@ -172,14 +172,14 @@ describe("consul-kv-object", function () {
                 objectKv.get('test/key-that-does-not-exist', function (err, res) {
                     should.exist(err);
                     done();
-                })
+                });
             });
             it("returns undefined when asking for undefined key", function (done) {
                 objectKv.get('test/nonexisting', function (err, res) {
                     should.not.exists(err);
                     should.equal(res, undefined);
                     done();
-                })
+                });
             });
             describe("#guessTypes", function () {
                 beforeEach(function () {
@@ -192,31 +192,31 @@ describe("consul-kv-object", function () {
                         res.should.be.equal(123456);
                         res.should.be.a.Number();
                         done();
-                    })
+                    });
                 });
                 it("maps booleans", function (done) {
                     objectKv.get('test/consul-kv-boolean-guess', function (err, res) {
                         should.not.exist(err);
                         res.should.be.a.Boolean();
                         done();
-                    })
+                    });
                 });
                 it("maps dates", function (done) {
                     objectKv.get('test/consul-kv-date-guess', function (err, res) {
                         should.not.exist(err);
                         res.should.be.a.Date();
                         done();
-                    })
+                    });
                 });
                 it("should work if there is empty object in consul", function (done) {
                     objectKv.get('test/consul-kv-null', function (err, res) {
                         should.not.exist(err);
-                        should.equal( res, null );
+                        should.equal(res, null);
                         done();
-                    })
-                })
+                    });
+                });
 
-            })
+            });
         });
         describe("set(options,callback)", function () {
             var testKey = 'test/consul-kv-set-test';
@@ -280,7 +280,7 @@ describe("consul-kv-object", function () {
                     },
                     k1: "v1",
                     k2: "v2"
-                }
+                };
                 objectKv.set(testKey + "/object", test, function (err, res) {
                     should.not.exist(err);
                     kv.set.should.have.callCount(5);
@@ -303,7 +303,7 @@ describe("consul-kv-object", function () {
                     },
                     k1: "v1",
                     k2: new Date('Thu Mar 10 2016 13:12:59 GMT+0100 (CET)')
-                }
+                };
                 objectKv.set(testKey + "/object", test, function (err, res) {
                     should.not.exist(err);
                     kv.set.should.have.callCount(5);
@@ -326,7 +326,7 @@ describe("consul-kv-object", function () {
                     },
                     k1: "v1",
                     k2: new Date('Thu Mar 10 2016 13:12:59 GMT+0100 (CET)')
-                }
+                };
                 var objectKv = consulKvObject(kv, { mapTypes: false });
 
                 objectKv.set(testKey + "/object", test, function (err, res) {
@@ -351,7 +351,7 @@ describe("consul-kv-object", function () {
                     },
                     k1: "v1",
                     k2: new Date('Thu Mar 10 2016 13:12:59 GMT+0100 (CET)')
-                }
+                };
                 objectKv.set("", test, function (err, res) {
                     should.not.exist(err);
                     kv.set.should.have.callCount(5);
@@ -363,17 +363,17 @@ describe("consul-kv-object", function () {
                     done();
                 });
             });
-            it("sets a null object", function(done) {
+            it("sets a null object", function (done) {
                 var test = {
                     null: null
-                }
+                };
                 objectKv.set("", test, function (err, res) {
                     should.not.exist(err);
                     kv.set.should.have.callCount(1);
                     kv.set.should.be.calledWith({ key: 'null', flags: 0, value: null });
                     done();
                 });
-            })
+            });
         });
         describe("del(options,callback)", function () {
             it("deletes object", function (done) {
@@ -385,9 +385,9 @@ describe("consul-kv-object", function () {
                         recurse: true
                     });
                     done();
-                })
+                });
             });
         });
-    })
+    });
 
 });
