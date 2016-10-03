@@ -384,7 +384,7 @@ describe("consul-kv-object", function () {
                     for( var i=0; i<test_size; i++ ) {
                         test['key:'+i] = i;
                     }
-                    this.timeout(test_size);
+                    this.timeout(test_size+1000);
                     objectKv.set("", test, function(err, res) {
                         should.not.exist(err);
                         kv.set.should.have.callCount(test_size);
