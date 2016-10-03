@@ -377,16 +377,18 @@ describe("consul-kv-object", function () {
             it("works without callback", function () {
                 objectKv.set("test", 123);
             });
-            it("allows to set large objects", function () {
-                var test = {};
-                var test_size=900000;
-                for( var i=0; i<test_size; i++ ) {
-                    test['key:'+i] = i;
-                }
-                this.timeout(test_size);
-                objectKv.set("", test, function(err, res) {
-                    should.not.exist(err);
-                    kv.set.should.have.callCount(test_size);
+            [1000,1e4, 1e5, 1e6].forEach(function(test_size) {
+
+                it("allows to set large objects ("+test_size+")", function () {
+                    var test = {};
+                    for( var i=0; i<test_size; i++ ) {
+                        test['key:'+i] = i;
+                    }
+                    this.timeout(test_size);
+                    objectKv.set("", test, function(err, res) {
+                        should.not.exist(err);
+                        kv.set.should.have.callCount(test_size);
+                    });
                 });
             });
         });
