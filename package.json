@@ -27,16 +27,16 @@
   },
   "homepage": "https://github.com/lekoder/consul-kv-object#readme",
   "devDependencies": {
-    "consul": "^0.25.0",
-    "coveralls": "^2.11.8",
-    "istanbul": "^0.4.2",
-    "mocha": "^2.4.5",
-    "should": "^9.0.2",
+    "consul": "^0.26.0",
+    "coveralls": "^2.11.14",
+    "istanbul": "^0.4.5",
+    "mocha": "^3.1.0",
+    "should": "^11.1.0",
     "should-sinon": "0.0.5",
-    "sinon": "^1.17.3"
+    "sinon": "^1.17.6"
   },
   "dependencies": {
-    "bluebird": "^3.3.4"
+    "bluebird": "^3.4.6"
   },
   "engines": {
     "node": ">=4.0"
