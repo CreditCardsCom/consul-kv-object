@@ -377,7 +377,7 @@ describe("consul-kv-object", function () {
             it("works without callback", function () {
                 objectKv.set("test", 123);
             });
-            [1000,1e4, 1e5, 1e6].forEach(function(test_size) {
+            [1000,1e4, 1e5].forEach(function(test_size) {
 
                 it("allows to set large objects ("+test_size+")", function () {
                     var test = {};
