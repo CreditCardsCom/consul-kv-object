@@ -11,9 +11,9 @@ function mockConsulForge() {
     function unWrap(what, cb) {
         return cb(JSON.parse(what));
     }
-    var mock = {
+    const mock = {
         "get": sinon.spy(function (options, callback) {
-            var file = 'test/mock-responses/' + options.key.replace(/\/$/, '').replace(/\//g, "--") + ".json";
+            const file = 'test/mock-responses/' + options.key.replace(/\/$/, '').replace(/\//g, "--") + ".json";
 
             if (options.key.match(/nonexisting/)) {
                 callback(null, undefined);
@@ -43,16 +43,16 @@ describe("consul-kv-object", function () {
         consulKvObject.should.throw();
     });
     it("returns object with get,set,del methods", function () {
-        var kv = mockConsulForge();
-        var objectKv = consulKvObject(kv);
+        const kv = mockConsulForge();
+        const objectKv = consulKvObject(kv);
         objectKv.should.be.a.Object();
         objectKv.get.should.be.a.Function();
         objectKv.set.should.be.a.Function();
         objectKv.del.should.be.a.Function();
     });
     describe("kv(consul.kv)#default", function () {
-        var testKey = "test/consul-kv-object";
-        var objectKv, kv;
+        const testKey = "test/consul-kv-object";
+        let objectKv, kv;
         beforeEach(function () {
             kv = mockConsulForge();
             objectKv = consulKvObject(kv);
@@ -161,7 +161,7 @@ describe("consul-kv-object", function () {
                 });
             });
             it("allows to disable type mapping", function (done) {
-                var objectKv = consulKvObject(kv, { mapTypes: false });
+                const objectKv = consulKvObject(kv, { mapTypes: false });
                 objectKv.get('test/consul-kv-date', function (err, res) {
                     should.not.exist(err);
                     res.should.be.a.String();
@@ -219,7 +219,7 @@ describe("consul-kv-object", function () {
             });
         });
         describe("set(options,callback)", function () {
-            var testKey = 'test/consul-kv-set-test';
+            const testKey = 'test/consul-kv-set-test';
             it("sets speficied key to specified string value in default mapping", function (done) {
                 objectKv.set(testKey + "/string", "value", function (err, res) {
                     should.not.exist(err);
@@ -257,7 +257,7 @@ describe("consul-kv-object", function () {
                 });
             });
             it("sets speficied key to specified date value in default mapping", function (done) {
-                var date = new Date('Thu Mar 10 2016 13:12:59 GMT+0100 (CET)');
+                const date = new Date('Thu Mar 10 2016 13:12:59 GMT+0100 (CET)');
                 objectKv.set(testKey + "/date", date, function (err, res) {
                     should.not.exist(err);
                     kv.set.should.be.calledOnce();
@@ -270,7 +270,7 @@ describe("consul-kv-object", function () {
                 });
             });
             it("sets a nested object", function (done) {
-                var test = {
+                const test = {
                     so1: {
                         "k11": "v11",
                         "k12": "v12",
@@ -293,7 +293,7 @@ describe("consul-kv-object", function () {
                 });
             });
             it("sets a nested object with correct flagMapping", function (done) {
-                var test = {
+                const test = {
                     so1: {
                         "k11": "v11",
                         "k12": 123,
@@ -316,7 +316,7 @@ describe("consul-kv-object", function () {
                 });
             });
             it("sets a nested object and ingnores flagmapping when flagmapper is disabled", function (done) {
-                var test = {
+                const test = {
                     so1: {
                         "k11": "v11",
                         "k12": 123,
@@ -327,7 +327,7 @@ describe("consul-kv-object", function () {
                     k1: "v1",
                     k2: new Date('Thu Mar 10 2016 13:12:59 GMT+0100 (CET)')
                 };
-                var objectKv = consulKvObject(kv, { mapTypes: false });
+                const objectKv = consulKvObject(kv, { mapTypes: false });
 
                 objectKv.set(testKey + "/object", test, function (err, res) {
                     should.not.exist(err);
@@ -341,7 +341,7 @@ describe("consul-kv-object", function () {
                 });
             });
             it("sets at root of keyspace without leading slashes", function (done) {
-                var test = {
+                const test = {
                     so1: {
                         "k11": "v11",
                         "k12": 123,
@@ -364,7 +364,7 @@ describe("consul-kv-object", function () {
                 });
             });
             it("sets a null object", function (done) {
-                var test = {
+                const test = {
                     null: null
                 };
                 objectKv.set("", test, function (err, res) {
@@ -380,8 +380,8 @@ describe("consul-kv-object", function () {
             [1000,1e4, 1e5].forEach(function(test_size) {
 
                 it("allows to set large objects ("+test_size+")", function () {
-                    var test = {};
-                    for( var i=0; i<test_size; i++ ) {
+                    let test = {};
+                    for( let i=0; i<test_size; i++ ) {
                         test['key:'+i] = i;
                     }
                     this.timeout(test_size+1000);

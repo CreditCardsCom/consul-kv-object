@@ -4,10 +4,10 @@ const objectKvForge = require('../../lib/consul-kv-object');
 const Promise = require("bluebird");
 
 describe("Acceptance with live consul", function () {
-    var consul = consulForge();
-    var objectKv = Promise.promisifyAll(objectKvForge(consul.kv));
+    const consul = consulForge();
+    const objectKv = Promise.promisifyAll(objectKvForge(consul.kv));
 
-    var testSpace = "test/consul-kv-object";
+    const testSpace = "test/consul-kv-object";
 
     beforeEach(function (done) {
 
@@ -26,7 +26,7 @@ describe("Acceptance with live consul", function () {
     ].forEach(function (tv) {
 
         it("sets and reads a " + tv.constructor.name + ":" + JSON.stringify(tv), function (done) {
-            var tk = testSpace + "/test";
+            const tk = testSpace + "/test";
             objectKv.set(tk, tv, function (err, res) {
                 should.not.exist(err);
 
@@ -41,7 +41,7 @@ describe("Acceptance with live consul", function () {
     });
     
     it("can set object at root of consul keystore", function(done) {
-        var testObj = {
+        const testObj = {
             test: {
                 asd:123
             }
