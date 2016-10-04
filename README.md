@@ -31,6 +31,7 @@ Options are passed as optional second parameter.
 | guessTypes   | false     | Try to guess types when reading value with flags==0
 | defaultType  | see below | Default type to use when flag is not recognized 
 | typeMapFlags | see below | Type mapping array
+| concurrency  | 10        | Number of concurrent consul connections when setting values
 
 ## Type mapping 
 
