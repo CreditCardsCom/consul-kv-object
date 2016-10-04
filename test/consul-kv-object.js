@@ -7,7 +7,8 @@ require('should-sinon');    // auguments sinon
 
 const consulKvObject = require('../lib/consul-kv-object');
 
-function mockConsulForge() {
+function mockConsulForge(opts) {
+    opts = opts || {};
     function unWrap(what, cb) {
         return cb(JSON.parse(what));
     }
@@ -28,7 +29,11 @@ function mockConsulForge() {
             });
         }),
         "set": sinon.spy(function (options, callback) {
-            setImmediate(callback, null);
+            if (opts.error) {
+                setImmediate(callback, new Error("A dummy Error"), null);
+            } else {
+                setImmediate(callback, null);
+            }
         }),
         "del": sinon.spy(function (options, callback) {
             setImmediate(callback, null);
@@ -391,6 +396,24 @@ describe("consul-kv-object", function () {
                     });
                 });
             });
+            it("can use delay", function () {
+                var kv = mockConsulForge();
+                var objectKv = consulKvObject(kv, { delay: 100 });
+                var test = { key: "val" };
+                objectKv.set("", test, function (err, res) {
+                    should.not.exist(err);
+                    kv.set.should.have.callCount(1);
+                });
+            });
+            it("exposes error to callback", function () {
+                var kv = mockConsulForge({ error: true });
+                var objectKv = consulKvObject(kv);
+                var test = { key: "val" };
+                objectKv.set("", test, function (err, res) {
+                    should.not.exist(res);
+                    err.should.be.instanceof(Error);
+                });
+            })
         });
         describe("del(options,callback)", function () {
             it("deletes object", function (done) {
