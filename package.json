@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lekoder/consul-kv-object.git"
+    "url": "git+https://github.com/creditcardscom/consul-kv-object.git"
   },
   "keywords": [
     "consul",
@@ -23,9 +23,9 @@
   "author": "Mariusz 'koder' Chwalba <mariusz@chwalba.net>",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/lekoder/consul-kv-object/issues"
+    "url": "https://github.com/creditcardscom/consul-kv-object/issues"
   },
-  "homepage": "https://github.com/lekoder/consul-kv-object#readme",
+  "homepage": "https://github.com/creditcardscom/consul-kv-object#readme",
   "devDependencies": {
     "consul": "^0.26.0",
     "coveralls": "^2.11.14",
