@@ -1,13 +1,23 @@
 language: node_js
 node_js:
   - "6"
-  - "6.3"
-  - "6.2"
-  - "6.1"
-  - "6.0"
-  - "4"
-  - "4.1"
-  - "4.0"
-  - "node"
 
-after_success: 'npm run coveralls'
+cache:
+  directories:
+    - $HOME/.npm
+
+before_install:
+  - npm install -g npm@next
+
+install:
+  - npm install
+
+before_deploy:
+  - curl -u ci-deploy-user:$ARTIFACTORY_DEPLOY_KEY https://packages.creditcards.com/artifactory/api/npm/auth >> ~/.npmrc
+
+deploy:
+  provider: script
+  script: npm publish
+  skip_cleanup: true
+  on:
+    tags: true
